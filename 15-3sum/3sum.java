@@ -1,37 +1,32 @@
 class Solution {
     public List<List<Integer>> threeSum(int[] nums) {
         Arrays.sort(nums);
-        List<List<Integer>> list = new ArrayList<>();
-        for(int i = 0; i < nums.length; i++){
-            int target = -nums[i];
-            int j = i + 1;
-            int k = nums.length - 1;
-            while(j < k){
-                if(nums[j] + nums[k] == target){
-                    List<Integer> intlist = new ArrayList<>();
-                    intlist.add(nums[i]);
-                    intlist.add(nums[j]);
-                    intlist.add(nums[k]);
-                    list.add(intlist);
-                    while(j < k && nums[j] == nums[j + 1]) {
-                        j++;
-                    }
-                    while(j < k && nums[k] == nums[k - 1]) {
-                        k--;
-                    }
-                    j++; k--;
+        List<List<Integer>> res = new ArrayList<>();
+        for(int i = 0; i < nums.length - 1; i++){
+            if(i > 0 && nums[i] == nums[i - 1]) continue;
+            int left = i + 1;
+            int right = nums.length - 1;
+            int sum = -1 * nums[i];
+
+            while(left < right){
+                List<Integer> triplets = new ArrayList<>();
+                int s = nums[left] + nums[right];
+                if(s == sum){
+                    triplets.add(nums[i]);
+                    triplets.add(nums[left]);
+                    triplets.add(nums[right]);
+                    res.add(triplets);
+                    right--; left++;
+
+                    while(left < nums.length && nums[left] == nums[left - 1]) left++;
+                    while(right >= 0 && nums[right] == nums[right + 1]) right--;
+                } else if(s < sum){
+                    left++;
                 } else{
-                    if(target > nums[j] + nums[k]){
-                        j++;
-                    } else{
-                        k--;
-                    }
-                }
-                while(i + 1 < nums.length && nums[i] == nums[i + 1]) {
-                    i++;
+                    right--;
                 }
             }
         }
-        return list;
+        return res;
     }
 }
