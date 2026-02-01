@@ -2,24 +2,23 @@ class Solution {
     public boolean isHappy(int n) {
         int slow = n;
         int fast = n;
-        do{
-            slow = square(slow);
-            fast = square(square(fast));
-        }while(slow != fast);
+        while(fast != 1){
+            slow = sum(slow);
+            fast = sum(fast); fast = sum(fast);
 
-        if(slow == 1){
-            return true;
+            if(slow == fast && slow != 1){
+                return false;
+            }
         }
-        return false;
+        return true;
     }
-
-    public int square(int number){
-        int ans = 0;
-        while(number > 0){
-            int rem = number % 10;
-            ans += rem * rem;
-            number /= 10;
+    public int sum(int n){
+        int s = 0;
+        while(n > 0){
+            int rem = n % 10;
+            n = n / 10;
+            s = s + (rem * rem);
         }
-        return ans;
+        return s;
     }
 }
