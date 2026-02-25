@@ -1,34 +1,41 @@
 class Solution {
     public int[] searchRange(int[] nums, int target) {
-        int[] arr = {-1, -1};
-        if(nums.length == 1 && target == nums[0]){
-            return new int[]{0, 0};
-        }
-        int start = 0;
-        int end = nums.length - 1;
-        int mid; int midHolder;
-        while(start <= end){
-            mid = (start + (end - start) / 2);
-            midHolder = mid;
-            if(nums[mid] == target){
-                arr[0] = mid;
-                while(mid > 0 && nums[mid - 1] == target){
-                    arr[0] = mid - 1;
-                    mid--;
-                }
-                mid = midHolder;
-                while(mid < nums.length && nums[mid] == target){
-                    arr[1] = mid;
-                    mid++;
-                }
-                break;
+        return new int[]{first(nums, target), last(nums, target)};
+    }
+    int first(int[] arr, int target){
+        int low = 0, high = arr.length - 1;
+        int res = -1;
+        while(low <= high){
+            int guess = (low + high) / 2;
+            if(arr[guess] < target){
+                low = guess + 1;
             }
-            else if(nums[mid] > target){
-                end = mid - 1;
-            } else{
-                start = mid + 1;
+            else if(arr[guess] > target){
+                high = guess - 1;
+            }
+            else{
+                res = guess;
+                high = guess - 1;
             }
         }
-        return arr;
+        return res;
+    }
+    int last(int[] arr, int target){
+        int low = 0, high = arr.length - 1;
+        int res = -1;
+        while(low <= high){
+            int guess = (low + high) / 2;
+            if(arr[guess] < target){
+                low = guess + 1;
+            }
+            else if(arr[guess] > target){
+                high = guess - 1;
+            }
+            else{
+                res = guess;
+                low = guess + 1;
+            }
+        }
+        return res;
     }
 }
