@@ -1,24 +1,31 @@
 class Solution {
     public int search(int[] nums, int target) {
-        int low = 0;
-        int high = nums.length - 1;
-        int mid;
+        int n = nums.length;
+        int low = 0, high = nums.length - 1;
         while(low <= high){
-            mid = (low + high) / 2;
-            if(nums[mid] == target){
-                return mid;
+            int guess = (low + high) / 2;
+            if(nums[guess] == target){
+                return guess;
             }
-            if(nums[low] <= nums[mid]){
-                if(nums[low] <= target && target <= nums[mid]){
-                    high = mid - 1;
+            if(nums[guess] > nums[n - 1]){
+                if(nums[guess] < target){
+                    low = guess + 1;
                 } else{
-                    low = mid + 1;
+                    if(nums[0] > target){
+                        low = guess + 1;
+                    }else{
+                        high = guess - 1;
+                    }
                 }
             } else{
-                if(nums[mid] <= target && target <= nums[high]){
-                    low = mid + 1;
+                if(nums[guess] > target){
+                    high = guess - 1;
                 }else{
-                    high = mid - 1;
+                    if(nums[n - 1]  < target){
+                        high = guess - 1;
+                    }else{
+                        low = guess + 1;
+                    }
                 }
             }
         }
