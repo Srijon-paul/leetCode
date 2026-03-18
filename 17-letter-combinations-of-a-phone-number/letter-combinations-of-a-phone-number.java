@@ -1,43 +1,33 @@
 class Solution {
     public List<String> letterCombinations(String digits) {
-        if(digits.isEmpty()){
-            return new ArrayList<>();
-        }
-        return helper("", digits);
+        HashMap<Character, String> map = new HashMap<>();
+        map.put('2', "abc");
+        map.put('3', "def");
+        map.put('4', "ghi");
+        map.put('5', "jkl");
+        map.put('6', "mno");
+        map.put('7', "pqrs");
+        map.put('8', "tuv");
+        map.put('9', "wxyz");
+
+        int n = digits.length();
+        List<String> list = new ArrayList<>();
+        int idx = 0;
+        String tmp = "";
+        helper(idx, n, tmp, digits, list, map);
+        return list;
     }
-    public ArrayList<String> helper(String pro, String unpro){
-        if(unpro.isEmpty()){
-            ArrayList<String> list = new ArrayList<>();
-            list.add(pro);
-            return list;
+    void helper(int idx, int n, String tmp, String digits, List<String> list, HashMap<Character, String> map){
+        if(idx == n){
+            list.add(tmp);
+            return;
         }
-        ArrayList<String> ans = new ArrayList<>();
-        int digit = unpro.charAt(0) - '0';
-        if(digit >= 2 && digit <= 6){
-            for(int i = (digit-2) * 3; i < (digit - 1) * 3; i++){
-                char ch = (char)('a' + i);
-                ans.addAll(helper(pro + ch, unpro.substring(1)));
-            }
-        } else{
-            if(digit == 7){
-                for(int i = 15; i < 19; i++){
-                    char ch = (char)('a' + i);
-                    ans.addAll(helper(pro + ch, unpro.substring(1)));
-                }
-            }
-            if(digit == 8){
-                for(int i = 19; i < 22; i++){
-                    char ch = (char)('a' + i);
-                    ans.addAll(helper(pro + ch, unpro.substring(1)));
-                }
-            }
-            if(digit == 9){
-                for(int i = 22; i < 26; i++){
-                    char ch = (char)('a' + i);
-                    ans.addAll(helper(pro + ch, unpro.substring(1)));
-                }
-            }
+        String choice = map.get(digits.charAt(idx));
+        for(int j = 0; j < choice.length(); j++){
+            tmp += choice.charAt(j);
+            helper(idx + 1, n, tmp, digits, list, map);
+            tmp = tmp.substring(0, tmp.length() - 1);
         }
-        return ans;
+        return;
     }
 }
