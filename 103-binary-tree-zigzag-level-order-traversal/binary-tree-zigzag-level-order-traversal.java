@@ -15,42 +15,34 @@
  */
 class Solution {
     public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
-        List<List<Integer>> result = new ArrayList<>();
-        if(root == null){
-            return result;
-        }
-        Deque<TreeNode> queue = new LinkedList<>();
-        boolean reverse = false;
+        if (root == null)
+            return new ArrayList<>();
+        List<List<Integer>> res = new ArrayList<>();
+        Queue<TreeNode> queue = new LinkedList<>();
         queue.add(root);
-        while(!queue.isEmpty()){
+        boolean lr = false;
+        while (!queue.isEmpty()) {
             int levelSize = queue.size();
-            List<Integer> currentLevel = new ArrayList<>(levelSize);
-            if(!reverse){
-                for(int i = 0; i < levelSize; i++){
-                    TreeNode currentNode = queue.removeFirst();
-                    currentLevel.add(currentNode.val);
-                    if(currentNode.left != null){
-                        queue.addLast(currentNode.left);
-                    }
-                    if(currentNode.right != null){
-                        queue.addLast(currentNode.right);
-                    }
+            List<Integer> tmp = new ArrayList<>();
+            while (levelSize > 0) {
+                TreeNode t = queue.peek();
+                queue.poll();
+                if (lr) {
+                    tmp.addFirst(t.val);
+                } else {
+                    tmp.add(t.val);
                 }
-            } else{
-                for(int i = 0; i < levelSize; i++){
-                    TreeNode currentNode = queue.removeLast();
-                    currentLevel.add(currentNode.val);
-                    if(currentNode.right != null){
-                        queue.addFirst(currentNode.right);
-                    }
-                    if(currentNode.left != null){
-                        queue.addFirst(currentNode.left);
-                    }
+                if(t.left != null){
+                    queue.add(t.left);
                 }
+                if(t.right != null){
+                    queue.add(t.right);
+                }
+                levelSize--;
             }
-            reverse = !reverse;
-            result.add(currentLevel);
+            lr = !lr;
+            res.add(tmp);
         }
-        return result;
+        return res;
     }
 }
