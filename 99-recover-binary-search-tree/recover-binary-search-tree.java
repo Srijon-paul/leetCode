@@ -14,23 +14,46 @@
  * }
  */
 class Solution {
-    TreeNode first, second, prev;
-
+    int wrong = 0;
+    TreeNode prev = null;
+    TreeNode w1first = null;
+    TreeNode w1second = null;
+    TreeNode w2first= null;
+    TreeNode w2second = null;
     public void recoverTree(TreeNode root) {
-        inorder(root);
-        int temp = first.val;
-        first.val = second.val;
-        second.val = temp;
+        helper(root);
+        if(wrong == 1){
+            int temp = w1first.val;
+            w1first.val = w1second.val;
+            w1second.val = temp;
+        }else{
+            int temp = w1first.val;
+            w1first.val = w2second.val;
+            w2second.val = temp;
+        }
     }
 
-    private void inorder(TreeNode node) {
-        if (node == null) return;
-        inorder(node.left);
-        if (prev != null && node.val < prev.val) {
-            if (first == null) first = prev;
-            second = node;
+    void helper(TreeNode root){
+        if(root == null){
+            return;
         }
-        prev = node;
-        inorder(node.right);
+        helper(root.left);
+        if(prev == null){
+            prev = root;
+        }else{
+            if(root.val < prev.val){
+                if(wrong == 0){
+                    w1first = prev;
+                    w1second = root;
+                    wrong++;
+                }else{
+                    w2first = prev;
+                    w2second = root;
+                    wrong++;
+                }
+            }
+            prev = root;
+        }
+        helper(root.right);
     }
 }
